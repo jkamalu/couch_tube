@@ -1,0 +1,35 @@
+doctype
+html
+  head
+    title Synch    
+    link(rel='stylesheet', href='/bootstrap/css/bootstrap.min.css')
+    link(rel='stylesheet', href='/stylesheets/style.css')
+  body
+    header
+      h1 
+        | CouchTube
+    div(class='container-fluid' id='main-content-container')
+      div(class='container' id='row-container')
+        div(class='row')
+          div(class='col-md-3 col-lg-3' id='left-block')
+            div(class='panel panel-default')
+          div(class='col-md-3 col-lg-3 col-md-push-6' id='right-block')
+            div(class='panel panel-default')
+          div(class='col-md-6 col-lg-6 col-md-pull-3' id='center-block')
+            div#theater-container
+              div#player-container  
+                div#player
+            div#video-select-container
+              div(class='form-inline' id='video-form')
+                div(class='form-group')
+                  input(class='form-control' id='query-input' placeholder='Enter video url')
+                button(class='btn btn-default' id='query-button')
+                  | Reload
+    footer
+      p
+        | Running on nodeJs with Express, Jade, Stylus, and Bootstrap
+    script(src='//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js')
+    script(src='/js/create_player.js')
+    script(src='/js/handle_search.js')
+    script(src='/js/dynamic_player.js')
+      //http://ageekandhisblog.com/bootstrap-3-change-stacking-order/
