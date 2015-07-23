@@ -2,15 +2,15 @@
 @import url('http://fonts.googleapis.com/css?family=Abel')
 global-reset()
 
-main-color = #C90000
-background-color = #faf9f0
-player-width =855px
+main-color = #D9534F
+background-color = #C90000
+player-width = 855px
+player-height = 505px
 panel-width = 427px
 
 body
-  background-color #F2F2F2
+  background-color #FFEDED
   font-family 'Helvetica'
-  color #444
 
 header
   padding 50px 10px
@@ -38,23 +38,82 @@ header
 
       #left-block
         margin-top 50px
-        border 1px solid #000
         height 300px
         max-width 50%
         
       #right-block
         margin-top 50px
-        border 1px solid #000
-        height 300px
+        height player-height - 36px
         max-width 50%
+        
+        #nav-menu
+          color white
+          
+          #welcome-tab
+            border-top 0px
+
+            #welcome-anchor
+              color #c9302c
+              
+          #room-tab
+            border-top 0px
+
+            #room-anchor
+              color #c9302c
+              
+          #chat-tab
+            border-top 0px
+            
+            #chat-anchor
+              color #c9302c
+
+        #welcome-panel
+          border-top none
+          border-top-left-radius 0px
+          border-top-right-radius 0px
+          height 100%
+          
+          #welcome-body
+            font-size 18px
+            line-height 25px
+        
+        #room-panel
+          border-top none
+          border-top-left-radius 0px
+          border-top-right-radius 0px
+          height 100%
+          
+          #room-body
+            font-size 18px
+            line-height 25px
+              
+            #room-form
+              width 100%
+              
+/*              #room-form-group
+                
+                #room-input
+              
+              #room-button*/
+
+        #chat-panel
+          border-top none
+          border-top-left-radius 0px
+          border-top-right-radius 0px
+          height 100%
+          
+          #chat-body
+            //border-top-left-radius 0px
+            //border-top-right-radius 0px
+
 
       #center-block
         margin 50px auto
         padding 0px
         text-align center
-//This scheme for resizable vidya found here http://stackoverflow.com/questions/7737557
+        //This scheme for resizable vidya found here http://stackoverflow.com/questions/7737557
         #theater-container
-          margin 0px 20px 20px 20px
+          margin 0px auto 20px
           max-width player-width
           
           #player-container
