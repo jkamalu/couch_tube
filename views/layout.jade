@@ -1,0 +1,82 @@
+doctype
+html
+  head
+    title CouchTube    
+    link(rel='stylesheet', href='/bootstrap/css/bootstrap.min.css')
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    //script(src='//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js')
+    script(src='/javascripts/jquery-2.0.0.min.js')
+    script(src='/bootstrap/js/bootstrap.min.js')
+  body
+    header
+      h1 
+        | CouchTube
+    div(class='container-fluid' id='main-content-container')
+      div(class='container' id='row-container')
+        div(class='row')
+          div(class='col-md-3 col-lg-3' id='left-block')
+            div(class='panel panel-danger')
+              div(class='panel-heading') The left panel
+              div(class='panel-body')
+                p
+                  | Here is the body of my panel. In this website you should kindly lick my boots and scurry away.
+          div(class='col-md-3 col-lg-3 col-md-push-6' id='right-block')
+            ul(class='nav nav-tabs' id='nav-menu')
+              li(class='active right-tab' id='welcome-tab' data-toggle='tab')
+                a(href='#' id='welcome-anchor') Welcome
+              li(class='right-tab' id='room-tab' data-toggle='tab')
+                a(href='#' id='room-anchor') Room 
+              li(class='right-tab' id='chat-tab' data-toggle='tab')
+                a(href='#' id='chat-anchor') Chat
+            div(class='panel panel-default panel-right' id='welcome-tab-panel')
+              div(class='panel-body' id='welcome-body')
+                p(class='text-justify' id='welcome-message')
+                  | Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  br
+                  br
+                  |Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+                  br
+                  br
+                  |Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+                  br
+                  br
+                  |Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            div(class='panel panel-default panel-right' id='room-tab-panel')
+              div(class='panel-body' id='room-body')
+                p(class='text-justify' id='room-message')
+                  |Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+                  br
+                  br
+                  | Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  br
+                  br
+                  |Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                  br
+                  br
+                  |Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+                  br
+                  br
+                div(class='form-inline' id='room-form')
+                  div(class='form-group' id='room-form-group')
+                    input(class='form-control' id='room-input' placeholder='Enter room key')
+                  button(class='btn btn-danger' id='room-button')
+                    | Join 
+            div(class='panel panel-default panel-right' id='chat-tab-panel')
+              div(class='panel-body' id='chat-body')
+          div(class='col-md-6 col-lg-6 col-md-pull-3' id='center-block')
+            div#theater-container
+              div#player-container  
+                div#player
+            div#video-select-container
+              div(class='form-inline' id='video-form')
+                div(class='form-group form-group-lg')
+                  input(class='form-control' id='query-input' placeholder='Enter video url')
+                button(class='btn btn-lg btn-danger' id='query-button')
+                  | Reload
+      footer
+        p
+          | Running on nodeJs with Express, Jade, Stylus, and Bootstrap
+    script(src='/javascripts/create_player.js')
+    script(src='/javascripts/handle_search.js')
+    script(src='/javascripts/basic_events.js')
+      //http://ageekandhisblog.com/bootstrap-3-change-stacking-order/
