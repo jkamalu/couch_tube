@@ -4,7 +4,7 @@ html
     title CouchTube    
     link(rel='stylesheet', href='/bootstrap/css/bootstrap.min.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
-    //script(src='//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js')
+    script(src='/socket.io/socket.io.js')
     script(src='/javascripts/jquery-2.0.0.min.js')
     script(src='/bootstrap/js/bootstrap.min.js')
   body
@@ -16,10 +16,11 @@ html
         div(class='row')
           div(class='col-md-3 col-lg-3' id='left-block')
             div(class='panel panel-danger')
-              div(class='panel-heading') The left panel
+              div(class='panel-heading') Status
               div(class='panel-body')
-                p
-                  | Here is the body of my panel. In this website you should kindly lick my boots and scurry away.
+                p(id='para-status')
+                  span(class='label label-default' id='label-status')
+                    | NOT CONNECTED
           div(class='col-md-3 col-lg-3 col-md-push-6' id='right-block')
             ul(class='nav nav-tabs' id='nav-menu')
               li(class='active right-tab' id='welcome-tab' data-toggle='tab')
@@ -70,13 +71,12 @@ html
             div#video-select-container
               div(class='form-inline' id='video-form')
                 div(class='form-group form-group-lg')
-                  input(class='form-control' id='query-input' placeholder='Enter video url')
+                  input(class='form-control' id='query-input' placeholder='Enter video id')
                 button(class='btn btn-lg btn-danger' id='query-button')
                   | Reload
       footer
         p
           | Running on nodeJs with Express, Jade, Stylus, and Bootstrap
-    script(src='/javascripts/create_player.js')
-    script(src='/javascripts/handle_search.js')
+    script(src='/javascripts/control_player.js')
     script(src='/javascripts/basic_events.js')
       //http://ageekandhisblog.com/bootstrap-3-change-stacking-order/

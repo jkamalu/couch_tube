@@ -3,28 +3,125 @@
 /**
  * Module dependencies.
  */
-
 var app = require('../app');
-var debug = require('debug')('couch_web:server');
+var debug = require('debug')('CouchTube:server');
 var http = require('http');
 
-/**
+/** 
  * Get port from environment and store in Express.
  */
-
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
 /**
  * Create HTTP server.
  */
-
 var server = http.createServer(app);
 
 /**
+ * Save app objects into local variables
+ */
+var io = app.io
+var db = app.db
+
+/**
+ * Attach io object to the server.
+ */
+io.attach(server)
+
+/**
+ * Listen for socket events from the client and send them out
+ */
+io.on('connection', function(socket) {
+  
+  /*
+   * prereq: a leader sends the request (i should check this server side though)
+   * TODO: need to add this shit to the json
+   * todo: NEED TO CHECK IF LEADER
+   */
+  socket.on('reload player with videoId', function(videoId) {
+    var room_collection = db.collection('room_collection')
+    room_collection.update(
+      { 'room_users': { user } }
+    )
+    io.sockets.in(socket.rooms[0]).emit('reload player with videoId', videoId)
+  })
+
+  /*
+   *  PLAY BUTTON AND PAUSE BUTTON ARE WHERE WE HANDLE ROOM PLAY BACK STATE AND TIME
+   */
+
+  /*
+   * INPUT DOC: room name
+   * DATABASE ACTIVITY:
+   * EMITS:
+   *    TO: The sender
+   *    DOC: room name, list of users (user name and user roles), video id
+   * TODO: If a socket is a leader, disband the room
+   *       Add other relative values and their proper behavior
+   */
+  socket.on('JOIN FROM CLIENT', function(doc) {
+    //Case inesensitivity for the roomname
+    roomName = roomName.toUpperCase()
+    //One socket can only ever be in one room
+    socket.leaveAll()
+    socket.join(roomName)
+
+    var room_collection = db.collection('room_collection')
+    room_collection.findOne({room_name: roomName}, function(err, doc){
+      var userRole
+      /*
+       * IF THE ROOM DOES NOT EXIST, CREATE IT IN THE DATABASE
+       * 
+       * Insert full entry room collection:
+       * - name of the room
+       * - new user entry: name, role, socketid
+       */
+      if (!doc) {
+        userRole = 'leader'
+        room_collection.insert(doc =
+          {
+            'room_name': roomName,
+            'room_users': [
+              {
+                'user_name': '',
+                'user_role': userRole,
+                'user_socket': socket.id
+              }
+            ],
+            'room_video': '',
+            'room_playback_time': '',
+            'room_playback_state': ''
+          }
+        )
+      } 
+      /*
+       * IF THE ROOM DOES EXIST, UPDATE THE USER ENTRIES IN THE DATABASE
+       *
+       * Insert user entry into proper room collection
+       * - new user entry: name, role, socketid
+       */
+      else {
+        userRole = 'slave'
+        user = {}
+        user.user_name = '',
+            .user_role = userRole
+        doc.room_users.push(user)
+        user.user_socket = socket.id
+        room_collection.update(
+          { 'room_name': roomName },
+          { $push: { room_users: user } }
+        )
+      }
+      socket.emit('JOIN FROM SERVER', doc)
+    })
+  })
+})
+
+
+/** 
  * Listen on provided port, on all network interfaces.
  */
-
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
@@ -32,7 +129,6 @@ server.on('listening', onListening);
 /**
  * Normalize a port into a number, string, or false.
  */
-
 function normalizePort(val) {
   var port = parseInt(val, 10);
 
@@ -52,7 +148,6 @@ function normalizePort(val) {
 /**
  * Event listener for HTTP server "error" event.
  */
-
 function onError(error) {
   if (error.syscall !== 'listen') {
     throw error;
@@ -80,7 +175,6 @@ function onError(error) {
 /**
  * Event listener for HTTP server "listening" event.
  */
-
 function onListening() {
   var addr = server.address();
   var bind = typeof addr === 'string'
