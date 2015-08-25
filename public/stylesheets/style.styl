@@ -6,7 +6,6 @@ main-color = #D9534F
 background-color = #C90000
 player-width = 855px
 player-height = 505px
-panel-width = 427px
 
 body
   background-color #FFEDED
@@ -30,146 +29,137 @@ header
   
   #row-container
     width auto
+    padding 0px
     text-align center
 
     .row
       width auto
       margin 0px auto
-
-      #left-block
-        margin-top 50px
-        height 300px
-        max-width 50%
-        min-width 435px
-        
-      #right-block
-        margin-top 50px
-        height player-height - 36px
-        max-width 50%
-        min-width 435px
-        
-        #nav-menu
-          color white
-          
-          li 
-            min-width 100px
-          
-          #welcome-tab
-            border-top 0px
-
-            #welcome-anchor
-              color #c9302c
-              
-          #room-tab
-            border-top 0px
-
-            #room-anchor
-              color #c9302c
-              
-          #chat-tab
-            border-top 0px
-            
-            #chat-anchor
-              color #c9302c
-
-        #welcome-tab-panel
-          border-top none
-          border-top-left-radius 0px
-          border-top-right-radius 0px
-          height 100%
-          
-          #welcome-body
-            font-size 18px
-            line-height 25px
-        
-        #room-tab-panel
-          display none
-          border-top none
-          border-top-left-radius 0px
-          border-top-right-radius 0px
-          height 100%
-          
-          #room-body
-            font-size 18px
-            line-height 25px
-              
-            #room-form
-              width 100%
-              
-              #room-form-group
-                width 80%
-
-                #room-input
-                  width 100%
-              
-              #room-button
-                width 20%
-
-        #chat-tab-panel
-          display none
-          border-top none
-          border-top-left-radius 0px
-          border-top-right-radius 0px
-          height 100%
-          
-          #chat-body
-            //border-top-left-radius 0px
-            //border-top-right-radius 0px
-
-
-      #center-block
-        margin 50px auto
+      
+      #main-content-col
         padding 0px
-        text-align center
-        //This scheme for resizable vidya found here http://stackoverflow.com/questions/7737557
-        #theater-container
-          margin 0px auto 20px
-          max-width player-width
-          
-          #player-container
-            position relative
-            padding-bottom 60%
-            height 0px
+        
+        .row
+          width auto
 
-            #player
-              position absolute
-              top 0px
-              left 0px
-              width 100%
-              height 100%
-              border-top 5px solid #000
-              border-bottom 5px solid #1A1A1A
-              border-left 1px solid #000
-              border-right 1px solid #000
-              border-radius 5px
+          #right-block
+            margin 0px auto
+            padding 0px 15px
+            max-width 50%
+            
+            #nav-menu
+              color white
+              
+              li 
+                width 25%
+                border-top 0px
+                overflow hidden
+                
+                a
+                  color #c9302c
+                  margin 0px
+                  width 100%
+                  
+            .panel-right
+              border-top-left-radius 0px
+              border-top-right-radius 0px
+              border-top none
+              margin 0px
+              min-height 470px
+              max-height 470px   
+              overflow-y scroll     
+              
+              .panel-body
+                font-size 18px
+                line-height 25px
+                height 100%
+            
+            #room-tab-panel
+              display none
+              border-top none
+              
+              #room-body
+                font-size 18px
+                line-height 25px
+                  
+                #room-form
+                  width 100%
+                  
+                  #room-form-group
+                    width 80%
 
-        #video-select-container
-          display none
-          width 50%
-          margin 0 auto
-          text-align center
+                    #room-input
+                      width 100%
+                  
+                  #room-button
+                    width 20%
 
-          #video-form
-            width 100%
-            display table
+            #status-tab-panel
+              display none
+              border-top none
 
-            .form-group
-              display table-cell
-              width 85%
-                    
-              #query-input
+            #chat-tab-panel
+              display none
+              border-top none
+
+          #center-block
+            margin 0px auto 50px
+            padding 0px 15px
+            text-align center
+            //This scheme for resizable vidya found here http://stackoverflow.com/questions/7737557
+            #theater-container
+              margin 0px auto 50px
+              max-width player-width
+              
+              #player-container
+                position relative
+                padding-bottom 60%
+                height 0px
+
+                #player
+                  position absolute
+                  top 0px
+                  left 0px
+                  width 100%
+                  height 100%
+                  border-top 5px solid #000
+                  border-bottom 5px solid #000
+                  border-left 1px solid #000
+                  border-right 1px solid #000
+                  border-radius 5px
+
+            #video-select-container
+              max-width 50%
+              padding 0px 5px
+              margin 0px auto
+              text-align center
+
+              #video-form
+                width 100%
+                display table
+
+                .form-group
+                  display table-cell
+                  width 85%
+                        
+                  #query-input
+                    width 100%
+
+                #query-btn
+                  display table-cell
+                  
+              #search-results
                 width 100%
 
-            #query-btn
-              display table-cell
-              
-          #search-results
-            width 100%
-
 footer
-  width player-width
+  width 100%
+  float none
   text-align center
-  margin 50px auto
+  margin 100px auto 50px
   border-top 1px dotted #ccc
   padding-top 5px
   font-size 15px
+    
+    p 
+      float none
+      margin 0px auto

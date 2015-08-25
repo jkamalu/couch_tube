@@ -14,67 +14,73 @@ html
     div(class='container-fluid' id='main-content-container')
       div(class='container' id='row-container')
         div(class='row')
-          div(class='col-md-3 col-lg-3' id='left-block')
-            div(class='panel panel-danger')
-              div(class='panel-heading') Status
-              div(class='panel-body')
-                p(id='para-status')
-                  span(class='label label-default' id='label-status')
-                    | NOT CONNECTED
-          div(class='col-md-3 col-lg-3 col-md-push-6' id='right-block')
-            ul(class='nav nav-tabs' id='nav-menu')
-              li(class='active right-tab' id='welcome-tab' data-toggle='tab')
-                a(href='#' id='welcome-anchor') Welcome
-              li(class='right-tab' id='room-tab' data-toggle='tab')
-                a(href='#' id='room-anchor') Room 
-              li(class='right-tab' id='chat-tab' data-toggle='tab')
-                a(href='#' id='chat-anchor') Chat
-            div(class='panel panel-default panel-right' id='welcome-tab-panel')
-              div(class='panel-body' id='welcome-body')
-                p(class='text-justify' id='welcome-message')
-                  | Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  br
-                  br
-                  |Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
-                  br
-                  br
-                  |Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-                  br
-                  br
-                  |Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            div(class='panel panel-default panel-right' id='room-tab-panel')
-              div(class='panel-body' id='room-body')
-                p(class='text-justify' id='room-message')
-                  |Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
-                  br
-                  br
-                  | Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  br
-                  br
-                  |Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                  br
-                  br
-                  |Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-                  br
-                  br
-                div(class='form-inline' id='room-form')
-                  div(class='form-group' id='room-form-group')
-                    input(class='form-control' id='room-input' placeholder='Enter room key')
-                  button(class='btn btn-danger' id='room-button')
-                    | Join 
-            div(class='panel panel-default panel-right' id='chat-tab-panel')
-              div(class='panel-body' id='chat-body')
-          div(class='col-md-6 col-lg-6 col-md-pull-3' id='center-block')
-            div#theater-container
-              div#player-container  
-                div#player
-            div#video-select-container
-              div(class='form-inline' id='video-form')
-                div(class='form-group form-group-lg')
-                  input(class='form-control' id='query-input' placeholder='Enter video id')
-                button(class='btn btn-lg btn-danger' id='query-button')
-                  | Reload
-      footer
+          div(class='col-md-1 col-lg-1')
+          div(class='col-md-10 col-lg-10' id='main-content-col')
+            div(class='row')
+              div(class='col-md-8 col-lg-8' id='center-block')
+                div#theater-container
+                  div#player-container  
+                    div#player
+                div#video-select-container
+                  div(class='form-inline' id='video-form')
+                    div(class='form-group form-group-lg')
+                      input(class='form-control' id='query-input' placeholder='Enter video id')
+                    button(class='btn btn-lg btn-danger' id='query-button')
+                      | Reload
+              div(class='col-md-4 col-lg-4' id='right-block')
+                ul(class='nav nav-tabs text' id='nav-menu')
+                  li(class='active right-tab' id='welcome-tab' data-toggle='tab')
+                    a(class='glyphicon glyphicon-home' href='#' id='welcome-anchor')
+                  li(class='right-tab' id='room-tab' data-toggle='tab')
+                    a(class='glyphicon glyphicon-play' href='#' id='room-anchor') 
+                  li(class = 'right-tab' id='status-tab' data-toggle='tab')
+                    a(class='glyphicon glyphicon-cog' href='#' id='status-anchor')
+                  li(class='right-tab' id='chat-tab' data-toggle='tab')
+                    a(class='glyphicon glyphicon-comment' href='#' id='chat-anchor')
+                div(class='panel panel-default panel-right' id='welcome-tab-panel')
+                  div(class='panel-body' id='welcome-body')
+                    p(class='text-justify' id='welcome-message')
+                      | Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                      br
+                      br
+                      |Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+                      br
+                      br
+                      |Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+                      br
+                      br
+                      |Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                div(class='panel panel-default panel-right' id='room-tab-panel')
+                  div(class='panel-body' id='room-body')
+                    p(class='text-justify' id='room-message')
+                      |Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+                      br
+                      br
+                      | Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                      br
+                      br
+                      |Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                      br
+                      br
+                      |Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+                      br
+                      br
+                    div(class='form-inline' id='room-form')
+                      div(class='form-group' id='room-form-group')
+                        input(class='form-control' id='room-input' placeholder='Enter room key')
+                      button(class='btn btn-danger' id='room-button')
+                        | Join 
+                div(class='panel panel-default panel-right' id='status-tab-panel')
+                  div(class='panel-body' id='status-body')
+                    p(id='para-status')
+                      span(class='label label-default' id='label-status')
+                        | NOT CONNECTED
+                div(class='panel panel-default panel-right' id='chat-tab-panel')
+                  div(class='panel-body' id='chat-body')
+                    p(class='text-justify' id='chat-message')
+                      | Coming soon
+          div(class='col-md-1 col-lg-1')
+      footer(class='col-md-12 col-lg-12')
         p
           | Running on nodeJs with Express, Jade, Stylus, and Bootstrap
     script(src='/javascripts/control_player.js')

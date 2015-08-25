@@ -10,7 +10,7 @@ var http = require('http');
 /** 
  * Get port from environment and store in Express.
  */
-var port = normalizePort(process.env.PORT || '3000');
+var port = normalizePort(process.env.PORT || '3001');
 app.set('port', port);
 
 /**
@@ -35,39 +35,55 @@ io.attach(server)
 io.on('connection', function(socket) {
   
   /*
-   * prereq: a leader sends the request (i should check this server side though)
-   * TODO: need to add this shit to the json
-   * todo: NEED TO CHECK IF LEADER
+   * INPUT DOC: room name and video id
+   * DATABASE ACTIVITY: Add the video id to the room
+   * EMITS:
+   *    TO: All sockets in the room, including the sender
+   *    DOC: video id
+   * TODO: Check to mke sure a leader has made the request -- currently goes on every requst due to true
    */
-  socket.on('reload player with videoId', function(videoId) {
+  socket.on('RELOAD FROM CLIENT', function(doc) {
     var room_collection = db.collection('room_collection')
-    room_collection.update(
-      { 'room_users': { user } }
-    )
-    io.sockets.in(socket.rooms[0]).emit('reload player with videoId', videoId)
+    if (true) {
+      room_collection.update(
+        { 'room_name': doc.roomName },
+        { 
+          $set: {
+            room_video: doc.videoId,
+            room_playback_time: 0,
+            room_playback_state: 2
+          }
+        }
+      )
+      io.sockets.in(socket.rooms[0]).emit('RELOAD FROM SERVER', {room_video: doc.videoId})
+    }
   })
 
   /*
-   *  PLAY BUTTON AND PAUSE BUTTON ARE WHERE WE HANDLE ROOM PLAY BACK STATE AND TIME
-   */
-
-  /*
    * INPUT DOC: room name
-   * DATABASE ACTIVITY:
+   * DATABASE ACTIVITY: adds the room to the database if new and updates if not
    * EMITS:
    *    TO: The sender
-   *    DOC: room name, list of users (user name and user roles), video id
-   * TODO: If a socket is a leader, disband the room
+   *    DOC: the entire room JSON + status
+   * TODO: If a socket is a leader, update the leader
+           If a socket is a slave, get them to the right point in the video
    *       Add other relative values and their proper behavior
    */
   socket.on('JOIN FROM CLIENT', function(doc) {
     //Case inesensitivity for the roomname
-    roomName = roomName.toUpperCase()
-    //One socket can only ever be in one room
+    var roomName = doc.roomName.toUpperCase()
+    //removing user from io room and db room
+    var room_collection = db.collection('room_collection')
+    room_collection.update(
+      { },
+      { 
+        $pull: { 
+          room_users: { user_socket: socket.id } 
+        } 
+      }
+    )
     socket.leaveAll()
     socket.join(roomName)
-
-    var room_collection = db.collection('room_collection')
     room_collection.findOne({room_name: roomName}, function(err, doc){
       var userRole
       /*
@@ -103,19 +119,35 @@ io.on('connection', function(socket) {
        */
       else {
         userRole = 'slave'
-        user = {}
-        user.user_name = '',
-            .user_role = userRole
+        var user = 
+          {
+            'user_name': '',
+            'user_role': userRole,
+            'user_socket': socket.id
+          }
         doc.room_users.push(user)
-        user.user_socket = socket.id
         room_collection.update(
           { 'room_name': roomName },
           { $push: { room_users: user } }
         )
       }
+      doc.join_as = userRole;
       socket.emit('JOIN FROM SERVER', doc)
     })
   })
+
+  /*
+   * INPUT DOC: number of player state
+   * DATABASE ACTIVITY: change the state of the room
+   * EMITS:
+   *    TO: all sockets but sender
+   *    DOC: which state, and potentially the time
+   * TODO: everything
+   */
+  socket.on('PLAYER STATE CHANGE FROM CLIENT', function(doc) {
+    socket.broadcast.to(socket.rooms[0]).emit('PLAYER STATE CHANGE FROM SERVER', {player_state: doc.playerState, current_time: doc.currentTime})
+  })
+
 })
 
 
