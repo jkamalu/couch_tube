@@ -7,14 +7,13 @@ var express = require('express'),
     bodyParser = require('body-parser'),
     stylus = require('stylus'),
     nib = require('nib')
-var mongojs = require('mongojs'),
-    mongoURI = 'mongodb://user:pass@ds057862.mongolab.com:57862/couchtube' //'CouchTube'//<- local | online -> 'mongodb://user:pass@ds057862.mongolab.com:57862/couchtube',
 var routes = require('./routes/index'),
     users = require('./routes/users')
 var app = express()
-    app.db = mongojs(mongoURI, ['room_collection']),
     app.io = socketIO()
-    
+var connection = require('./bin/connectDB')
+    connection(function(db){})    
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'jade')

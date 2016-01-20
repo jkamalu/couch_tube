@@ -1,33 +1,19 @@
-#!/usr/bin/env node
-
-/**
- * Module dependencies.
- */
 var app = require('../app');
 var debug = require('debug')('CouchTube:server');
 var http = require('http');
+var port = normalizePort(process.env.PORT || '3003');
+app.set('port', port);
+var io = app.io;
+var server = http.createServer(app);
+io.attach(server);
+var connection = require('./connectDB');
 
 /** 
- * Get port from environment and store in Express.
+ * Listen on provided port, on all network interfaces.
  */
-var port = normalizePort(process.env.PORT || '3001');
-app.set('port', port);
-
-/**
- * Create HTTP server.
- */
-var server = http.createServer(app);
-
-/**
- * Save app objects into local variables
- */
-var io = app.io
-var db = app.db
-
-/**
- * Attach io object to the server.
- */
-io.attach(server)
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
 
 /**
  * Listen for socket events from the client and send them out
@@ -42,22 +28,28 @@ io.on('connection', function(socket) {
    *    DOC: video id
    * TODO: Check to mke sure a leader has made the request -- currently goes on every requst due to true
    */
-  socket.on('RELOAD FROM CLIENT', function(doc) {
-    var room_collection = db.collection('room_collection')
-    if (true) {
-      room_collection.update(
-        { 'room_name': doc.roomName },
-        { 
-          $set: {
-            room_video: doc.videoId,
-            room_playback_time: 0,
-            room_playback_state: 2
-          }
+  socket.on('RELOAD FROM CLIENT', function(data, err) {
+    connection(function(db) {
+      var room_collection = db.collection('room_collection');
+      room_collection.findOne({room_name: data.roomName}, function(err, doc) {
+        console.log(doc)
+        console.log(doc.room_name)
+        if (doc.room_leader == socket.id) {
+          room_collection.update(
+            { 'room_name': data.roomName },
+            { 
+              $set: {
+                room_video: data.videoId,
+                room_playback_time: 0,
+                room_playback_state: 2
+              }
+            }
+          );
+          io.sockets.in(socket.rooms[0]).emit('RELOAD FROM SERVER', {room_video: data.videoId});
         }
-      )
-      io.sockets.in(socket.rooms[0]).emit('RELOAD FROM SERVER', {room_video: doc.videoId})
-    }
-  })
+      });
+    });
+  });
 
   /*
    * INPUT DOC: room name
@@ -71,92 +63,93 @@ io.on('connection', function(socket) {
    */
   socket.on('JOIN FROM CLIENT', function(doc) {
     //Case inesensitivity for the roomname
-    var roomName = doc.roomName.toUpperCase()
+    var roomName = doc.roomName.toUpperCase();
     //removing user from io room and db room
-    var room_collection = db.collection('room_collection')
-    room_collection.update(
-      { },
-      { 
-        $pull: { 
-          room_users: { user_socket: socket.id } 
+    socket.leaveAll();
+    socket.join(roomName);
+    connection(function(db) {
+      var room_collection = db.collection('room_collection');
+      room_collection.update(
+        { },
+        { 
+          $pull: { 
+            room_users: { user_socket: socket.id } 
+          } 
+        }
+      );
+      room_collection.findOne({room_name: roomName}, function(err, doc){
+        var userRole;
+        /*
+         * IF THE ROOM DOES NOT EXIST, CREATE IT IN THE DATABASE
+         * 
+         * Insert full entry room collection:
+         * - name of the room
+         * - new user entry: name, role, socketid
+         */
+        if (!doc) {
+          userRole = 'leader';
+          doc = {
+              'room_name': roomName,
+              'room_leader': socket.id,
+              'room_users': [
+                {
+                  'user_name': '',
+                  'user_role': userRole,
+                  'user_socket': socket.id
+                }
+              ],
+              'room_video': '',
+              'room_playback_time': '',
+              'room_playback_state': ''
+          };
+          room_collection.insert(doc);
         } 
-      }
-    )
-    socket.leaveAll()
-    socket.join(roomName)
-    room_collection.findOne({room_name: roomName}, function(err, doc){
-      var userRole
-      /*
-       * IF THE ROOM DOES NOT EXIST, CREATE IT IN THE DATABASE
-       * 
-       * Insert full entry room collection:
-       * - name of the room
-       * - new user entry: name, role, socketid
-       */
-      if (!doc) {
-        userRole = 'leader'
-        room_collection.insert(doc =
-          {
-            'room_name': roomName,
-            'room_users': [
-              {
-                'user_name': '',
-                'user_role': userRole,
-                'user_socket': socket.id
-              }
-            ],
-            'room_video': '',
-            'room_playback_time': '',
-            'room_playback_state': ''
-          }
-        )
-      } 
-      /*
-       * IF THE ROOM DOES EXIST, UPDATE THE USER ENTRIES IN THE DATABASE
-       *
-       * Insert user entry into proper room collection
-       * - new user entry: name, role, socketid
-       */
-      else {
-        userRole = 'slave'
-        var user = 
-          {
+        /*
+         * IF THE ROOM DOES EXIST, UPDATE THE USER ENTRIES IN THE DATABASE
+         *
+         * Insert user entry into proper room collection
+         * - new user entry: name, role, socketid
+         */
+        else {
+          userRole = 'slave';
+          var user = {
             'user_name': '',
             'user_role': userRole,
             'user_socket': socket.id
-          }
-        doc.room_users.push(user)
-        room_collection.update(
-          { 'room_name': roomName },
-          { $push: { room_users: user } }
-        )
-      }
-      doc.join_as = userRole;
-      socket.emit('JOIN FROM SERVER', doc)
-    })
-  })
+          };
+          doc.room_users.push(user);
+          room_collection.update(
+            { 'room_name': roomName },
+            { $push: { room_users: user } }
+          );
+        }
+        doc.join_as = userRole;
+        doc.room_leader = '';
+        socket.emit('JOIN FROM SERVER', doc);
+      });
+    });
+  });
 
   /*
-   * INPUT DOC: number of player state
+   * INPUT DOC: number of player state (outdated)
    * DATABASE ACTIVITY: change the state of the room
    * EMITS:
    *    TO: all sockets but sender
    *    DOC: which state, and potentially the time
    * TODO: everything
    */
-  socket.on('PLAYER STATE CHANGE FROM CLIENT', function(doc) {
-    socket.broadcast.to(socket.rooms[0]).emit('PLAYER STATE CHANGE FROM SERVER', {player_state: doc.playerState, current_time: doc.currentTime})
-  })
+  socket.on('PLAYER STATE CHANGE FROM CLIENT', function(data, err) {
+    connection(function(db) {
+      var room_collection = db.collection('room_collection');
+      room_collection.findOne({room_name: data.roomName}, function(err, doc) {
+        if (doc.room_leader == socket.id) {
+          socket.broadcast.to(socket.rooms[0]).emit('PLAYER STATE CHANGE FROM SERVER', {player_state: data.playerState, current_time: data.currentTime});
+        }
+      });
+    });
+  });
 
 })
-
-
-/** 
- * Listen on provided port, on all network interfaces.
- */
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
 
 /**
  * Normalize a port into a number, string, or false.
