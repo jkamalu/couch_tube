@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>CouchTube</title>
+    <link rel="stylesheet" type="text/css" href="/skeleton/css/normalize.css">
+    <link rel="stylesheet" type="text/css" href="/skeleton/css/skeleton.css">
+    <link rel="stylesheet" type="text/css" href="/index.css">
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="/javascripts/jquery-2.0.0.min.js"></script>
+  </head>
+  
+  <body>
+    <section class="header">
+      <h2 class="header">Tune in</h2>
+    </section>
+    <div class="container">
+      <div class="navbar">
+        <ul class="navbar-list">
+          <li class="navbar-item">
+            <a class="navbar-link" href="#intro">Intro</a>
+          </li>
+          <li class="navbar-item">
+            <a class="navbar-link" href="#intro">Video</a>
+          </li>
+          <li class="navbar-item">
+            <a class="navbar-link" href="#intro">Room</a>
+          </li>
+          <ul class="navbar-list">
+            <li class="navbar-item">
+              <a class="navbar-link" href="#intro">Settings</a>
+            </li>
+          </ul>
+        </ul>
+      </div>    
+      <div id="player-container">
+        <div id="player">
+        </div>
+      </div>
+      <footer>
+        <p>
+          Running on NodeJS with Express and Skeleton.
+        </p>
+      </footer>
+    </div>
+    <script type="text/javascript" src="/javascripts/control_player.js"></script>
+    <script type="text/javascript" src="/javascripts/basic_events.js"></script>
+  </body>
+
+</html>

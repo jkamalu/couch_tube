@@ -4,9 +4,7 @@ var express = require('express'),
     favicon = require('serve-favicon'),
     logger = require('morgan'),
     cookieParser = require('cookie-parser'),
-    bodyParser = require('body-parser'),
-    stylus = require('stylus'),
-    nib = require('nib')
+    bodyParser = require('body-parser')
 var routes = require('./routes/index'),
     users = require('./routes/users')
 var app = express()
@@ -22,16 +20,6 @@ app.use(logger('dev'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
-app.use(stylus.middleware(
-  { src: __dirname + '/public',
-    compile: function(str, path) {
-      return stylus(str)
-        .set('filename', path)
-        .set('compress', true) 
-        .use(nib())
-    }
-  }
-))
 app.use(express.static(path.join(__dirname, 'public')))
 app.use('/', routes)
 app.use('/users', users)
