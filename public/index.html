@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
   <head>
     <title>CouchTube</title>
     <link rel="stylesheet" type="text/css" href="/skeleton/css/normalize.css">
@@ -9,42 +8,74 @@
     <script type="text/javascript" src="/socket.io/socket.io.js"></script>
     <script type="text/javascript" src="/javascripts/jquery-2.0.0.min.js"></script>
   </head>
-  
   <body>
     <section class="header">
       <h2 class="header">Tune in</h2>
     </section>
-    <div class="container">
+    <section class="content">
       <div class="navbar">
-        <ul class="navbar-list">
-          <li class="navbar-item">
-            <a class="navbar-link" href="#intro">Intro</a>
-          </li>
-          <li class="navbar-item">
-            <a class="navbar-link" href="#intro">Video</a>
-          </li>
-          <li class="navbar-item">
-            <a class="navbar-link" href="#intro">Room</a>
-          </li>
-          <ul class="navbar-list">
+        <div class="container">
+          <ul class="navbar-list" id="navbar-main">
             <li class="navbar-item">
-              <a class="navbar-link" href="#intro">Settings</a>
+              <a class="navbar-link" href="#intro">Intro</a>
             </li>
+            <li class="navbar-item">
+              <a class="navbar-link" href="#video">Video</a>
+            </li>
+            <li class="navbar-item">
+              <a class="navbar-link" href="#room">Room</a>
+            </li>
+            <ul class="navbar-list">
+              <li class="navbar-item">
+                <a class="navbar-link" href="#contact">Contact us</a>
+              </li>
+              <li class="navbar-item">
+                <a class="navbar-link" href="#settings">Settings</a>
+              </li>              
+            </ul>
           </ul>
-        </ul>
-      </div>    
-      <div id="player-container">
-        <div id="player">
         </div>
+      </div> 
+      <div class="container">   
+        <div id="player-container">
+          <div id="player">
+          </div>
+        </div>
+        <h4 id="intro">Intro</h4>
+        <h4 id="video">Video</h4>
+        <h4 id="room">Room</h4>
+        <h4 id="contact">Contact us</h4>
+        <form>
+          <div class="row">
+            <div class="six columns">
+              <label>Your email</label>
+              <input class="u-full-width" type="email" placeholder="test@mailbox.com" id="exampleEmailInput">
+            </div>
+            <div class="six columns">
+              <label>Reason for contacting</label>
+              <select class="u-full-width" id="exampleRecipientInput">
+                <option value="Option 1">Questions</option>
+                <option value="Option 2">Admiration</option>
+                <option value="Option 3">Can I get your number?</option>
+              </select>
+            </div>
+          </div>
+          <label for="exampleMessage">Message</label>
+          <textarea class="u-full-width" placeholder="Hi John …"></textarea>
+          <label>
+            <input type="checkbox">
+            <span class="label-body">Send a copy to yourself</span>
+          </label>
+          <input class="button" type="submit" value="Submit">
+        </form>
+        <footer>
+          <p>
+            Running on NodeJS with Express and Skeleton.
+          </p>
+        </footer>
       </div>
-      <footer>
-        <p>
-          Running on NodeJS with Express and Skeleton.
-        </p>
-      </footer>
-    </div>
+    </section>
     <script type="text/javascript" src="/javascripts/control_player.js"></script>
     <script type="text/javascript" src="/javascripts/basic_events.js"></script>
   </body>
-
 </html>
