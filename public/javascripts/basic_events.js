@@ -1,5 +1,5 @@
 var nav = $(".navbar");
-var header = $("section.header");
+var header = $(".header");
 var navlist = $("#navbar-main");
 
 

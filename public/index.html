@@ -9,10 +9,13 @@
     <script type="text/javascript" src="/javascripts/jquery-2.0.0.min.js"></script>
   </head>
   <body>
-    <section class="header">
+
+    <div class="header">
       <h2 class="header">Tune in</h2>
-    </section>
-    <section class="content">
+    </div>
+
+    <div class="content">
+
       <div class="navbar">
         <div class="container">
           <ul class="navbar-list" id="navbar-main">
@@ -27,7 +30,7 @@
             </li>
             <ul class="navbar-list">
               <li class="navbar-item">
-                <a class="navbar-link" href="#contact">Contact us</a>
+                <a class="navbar-link" href="#contact">Contact</a>
               </li>
               <li class="navbar-item">
                 <a class="navbar-link" href="#settings">Settings</a>
@@ -36,45 +39,97 @@
           </ul>
         </div>
       </div> 
+      
       <div class="container">   
+        
         <div id="player-container">
           <div id="player">
           </div>
         </div>
-        <h4 id="intro">Intro</h4>
-        <h4 id="video">Video</h4>
-        <h4 id="room">Room</h4>
-        <h4 id="contact">Contact us</h4>
-        <form>
+
+        <section id="intro">
+          <h5>Intro</h5>
+          <p>
+            Pedicabo ego vos et irrumabo,
+            Aureli pathice et cinaede Furi,
+            qui me ex versiculis meis putastis,
+            quod sunt molliculi, parum pudicum.
+            Nam castum esse decet pium poetam
+            ipsum, versiculos nihil necessest;
+            qui tum denique habent salem ac leporem,
+            si sunt molliculi ac parum pudici
+            et quod pruriat incitare possunt,
+            non dico pueris, sed his pilosis
+            qui duros nequeunt movere lumbos.
+            Vos, quod milia multa basiorum
+            legistis, male me marem putatis?
+            Pedicabo ego vos et irrumabo.
+          </p>       
+        </section>
+        
+        <section id="video">
+          <h5>Video</h5>  
           <div class="row">
             <div class="six columns">
-              <label>Your email</label>
-              <input class="u-full-width" type="email" placeholder="test@mailbox.com" id="exampleEmailInput">
+              <label>Video id</label>
+              <input class="u-full-width" id="video-input" type="email" placeholder="example_video_id">
+              <input class="button" id="video-button" type="submit" value="Load">
             </div>
             <div class="six columns">
-              <label>Reason for contacting</label>
-              <select class="u-full-width" id="exampleRecipientInput">
-                <option value="Option 1">Questions</option>
-                <option value="Option 2">Admiration</option>
-                <option value="Option 3">Can I get your number?</option>
-              </select>
+              <label>Info</label>
+            </div>            
+          </div>       
+        </section>
+
+        <section id="room">
+          <h5>Room</h5>  
+          <div class="row">
+            <div class="six columns">
+              <label>Room id</label>
+              <input class="u-full-width" id="room-input" type="email" placeholder="example_room_id">
+              <input class="button" id="room-button" type="submit" value="Join">
             </div>
-          </div>
-          <label for="exampleMessage">Message</label>
-          <textarea class="u-full-width" placeholder="Hi John …"></textarea>
-          <label>
-            <input type="checkbox">
-            <span class="label-body">Send a copy to yourself</span>
-          </label>
-          <input class="button" type="submit" value="Submit">
-        </form>
-        <footer>
-          <p>
-            Running on NodeJS with Express and Skeleton.
-          </p>
-        </footer>
+            <div class="six columns">
+              <label>Status</label>
+            </div>            
+          </div>      
+        </section>
+
+        <section id="contact">
+          <h5>Contact</h5>
+          <form>
+            <div class="row">
+              <div class="six columns">
+                <label>Your email</label>
+                <input class="u-full-width" type="email" placeholder="test@mailbox.com" id="exampleEmailInput">
+              </div>
+              <div class="six columns">
+                <label>Reason for contacting</label>
+                <select class="u-full-width" id="exampleRecipientInput">
+                  <option value="Option 1">I have a question</option>
+                  <option value="Option 2">I want to get involved</option>
+                  <option value="Option 3">I found a bug</option>
+                </select>
+              </div>
+            </div>
+            <label for="exampleMessage">Message</label>
+            <textarea class="u-full-width" placeholder="Hi John …"></textarea>
+            <input class="button" type="submit" value="Submit">
+          </form>          
+        </section>
+
+        <section id="footer">
+          <footer>
+            <p>
+              Running on NodeJS with Express and Skeleton.
+            </p>
+          </footer>          
+        </section>
+
       </div>
-    </section>
+    
+    </div>
+
     <script type="text/javascript" src="/javascripts/control_player.js"></script>
     <script type="text/javascript" src="/javascripts/basic_events.js"></script>
   </body>

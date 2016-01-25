@@ -8,7 +8,7 @@ body {
   padding-top: 150px;
 }
 
-section.header {
+.header {
   font-family: 'Raleway';
   position: fixed;
   top: 0;
@@ -90,8 +90,9 @@ li.navbar-item > a.navbar-link:hover {
 /* This scheme for resizable vidya found here http://stackoverflow.com/questions/7737557 */
 
 div#player-container {
-  position: relative;
   margin-top: 100px;
+  margin-bottom: 50px;
+  position: relative;
   padding-bottom: 60%;
   height: 0px;
 }
@@ -104,9 +105,16 @@ iframe#player {
   height: 100%;
 }
 
+section {
+  margin-top: 25px;
+}
+
+h5 {
+  border-bottom: thin solid #ccc;
+}
+
 footer {
   text-align: center;
-  margin: 25px auto 25px;
   border-top: thin solid #ccc;
   padding-top: 5px;
   font-size: 15px;

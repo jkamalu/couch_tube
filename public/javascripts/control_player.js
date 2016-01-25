@@ -7,8 +7,8 @@ var status = 'slave';
  /*
   * DOM elements to use
   */
-var searchButton = document.getElementById('query-button');
-var searchInput = document.getElementById('query-input');
+var searchButton = document.getElementById('video-button');
+var searchInput = document.getElementById('video-input');
 var joinButton = document.getElementById('room-button');
 var joinInput = document.getElementById('room-input');
 var statusLabel = document.getElementById('label-status');
@@ -25,9 +25,9 @@ firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 var player;
 function onYouTubeIframeAPIReady() {
 	player = new YT.Player('player', {
-		height: '505px',
-		width: '855px',
-		videoId: 'sng_CdAAw8M',
+		height: '480px',
+		width: '854px',
+		videoId: '_hyE2NO7HnU',
 		events: {
 			'onReady': onPlayerReady,
 			'onStateChange': onPlayerStateChange
@@ -60,9 +60,10 @@ joinButton.addEventListener('click', function(event) {
  */
 socket.on('JOIN FROM SERVER', function(data) {
 	room = data;
-	statusLabel.className = 'label label-success';
+	console.log(data);
+/*	statusLabel.className = 'label label-success';
 	statusLabel.innerHTML = 'CONNECTED to ' + room.room_name.toUpperCase() + ' as ' + room.join_as.toUpperCase();
-	status = room.join_as;
+	status = room.join_as;*/
 	if (room.room_video) {
 		player.loadVideoById({
 			'videoId': data.room_video,
