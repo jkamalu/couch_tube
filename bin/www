@@ -30,6 +30,7 @@ io.on('connection', function(socket) {
    */
   socket.on('RELOAD FROM CLIENT', function(data, err) {
     connection(function(db) {
+      console.log("treerterterte");
       var room_collection = db.collection('room_collection');
       room_collection.findOne({room_name: data.roomName}, function(err, doc) {
         console.log(doc)
@@ -62,6 +63,7 @@ io.on('connection', function(socket) {
    *       Add other relative values and their proper behavior
    */
   socket.on('JOIN FROM CLIENT', function(doc) {
+    console.log("werwerwerwerwe");
     //Case inesensitivity for the roomname
     var roomName = doc.roomName.toUpperCase();
     //removing user from io room and db room
@@ -87,7 +89,7 @@ io.on('connection', function(socket) {
          * - new user entry: name, role, socketid
          */
         if (!doc) {
-          userRole = 'leader';
+          userRole = 'Leader';
           doc = {
               'room_name': roomName,
               'room_leader': socket.id,
@@ -111,7 +113,7 @@ io.on('connection', function(socket) {
          * - new user entry: name, role, socketid
          */
         else {
-          userRole = 'slave';
+          userRole = 'Slave';
           var user = {
             'user_name': '',
             'user_role': userRole,

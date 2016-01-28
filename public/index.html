@@ -30,7 +30,7 @@
             </li>
             <ul class="navbar-list">
               <li class="navbar-item">
-                <a class="navbar-link" href="#contact">Contact</a>
+                <a class="navbar-link" id="#contact">Contact</a>
               </li>
               <li class="navbar-item">
                 <a class="navbar-link" href="#settings">Settings</a>
@@ -71,12 +71,23 @@
           <h5>Video</h5>  
           <div class="row">
             <div class="six columns">
-              <label>Video id</label>
+              <label>Video ID</label>
               <input class="u-full-width" id="video-input" type="email" placeholder="example_video_id">
               <input class="button" id="video-button" type="submit" value="Load">
             </div>
             <div class="six columns">
               <label>Info</label>
+              <ul class="video-list">
+                <li>You must be the room leader to load a video.</li>
+                <li>
+                  To load a video...
+                  <ul>
+                    <li>Find the video URL on <a href="https://www.youtube.com/">YouTube</a>.</li>
+                    <li>Input the video ID in the search bar.</li>
+                  </ul>
+                </li>
+                <li>For example: <strong>https://www.youtube.com/watch?v=51nfpGY_AJk</strong> has video ID <strong>51nfpGY_AJk</strong></li>
+              </ul>
             </div>            
           </div>       
         </section>
@@ -86,11 +97,23 @@
           <div class="row">
             <div class="six columns">
               <label>Room id</label>
-              <input class="u-full-width" id="room-input" type="email" placeholder="example_room_id">
+              <input class="u-full-width" id="room-input" type="text" placeholder="example_room_id">
               <input class="button" id="room-button" type="submit" value="Join">
             </div>
             <div class="six columns">
-              <label>Status</label>
+              <label>Info</label>
+              <table class="u-full-width">
+                <tbody>
+                  <tr>
+                    <td>Room:</td>
+                    <td id="room-label">Aucune</td>
+                  </tr>
+                  <tr>
+                    <td>Status:</td>
+                    <td id="status-label">Personne</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>            
           </div>      
         </section>
@@ -101,7 +124,7 @@
             <div class="row">
               <div class="six columns">
                 <label>Your email</label>
-                <input class="u-full-width" type="email" placeholder="test@mailbox.com" id="exampleEmailInput">
+                <input class="u-full-width" type="email" placeholder="test@mailbox.com" id="email-input">
               </div>
               <div class="six columns">
                 <label>Reason for contacting</label>
@@ -114,7 +137,7 @@
             </div>
             <label for="exampleMessage">Message</label>
             <textarea class="u-full-width" placeholder="Hi John …"></textarea>
-            <input class="button" type="submit" value="Submit">
+            <input class="button" id="email-button" type="submit" value="Submit">
           </form>          
         </section>
 

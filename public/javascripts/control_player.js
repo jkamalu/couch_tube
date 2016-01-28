@@ -11,8 +11,8 @@ var searchButton = document.getElementById('video-button');
 var searchInput = document.getElementById('video-input');
 var joinButton = document.getElementById('room-button');
 var joinInput = document.getElementById('room-input');
-var statusLabel = document.getElementById('label-status');
-var searchContainer = document.getElementById('video-select-container');
+var roomLabel = document.getElementById('room-label');
+var statusLabel = document.getElementById('status-label');
 
 /*
  * This code loads the IFrame Player API code asynchronously
@@ -48,9 +48,8 @@ var socket = io.connect();
  * ROOM JOIN - CLIENT
  */
 joinButton.addEventListener('click', function(event) {
-	roomName = joinInput.value;
+	socket.emit('JOIN FROM CLIENT', {roomName: joinInput.value});
 	joinInput.value = '';
-	socket.emit('JOIN FROM CLIENT', {roomName: roomName});
 });
 
 /*
@@ -60,16 +59,15 @@ joinButton.addEventListener('click', function(event) {
  */
 socket.on('JOIN FROM SERVER', function(data) {
 	room = data;
-	console.log(data);
-/*	statusLabel.className = 'label label-success';
-	statusLabel.innerHTML = 'CONNECTED to ' + room.room_name.toUpperCase() + ' as ' + room.join_as.toUpperCase();
-	status = room.join_as;*/
+	status = room.join_as;
 	if (room.room_video) {
 		player.loadVideoById({
 			'videoId': data.room_video,
 		});	
 		player.stopVideo();
 	}
+	roomLabel.innerHTML = room.room_name;
+	statusLabel.innerHTML = status;
 });
 
 /* 
@@ -82,7 +80,7 @@ searchButton.addEventListener('click', function(event) {
 		player.loadVideoById({
 			'videoId': data.room_video,
 		});	
-	} else if (status === 'leader') {
+	} else if (status === 'Leader') {
 		socket.emit('RELOAD FROM CLIENT', {roomName: room.room_name, videoId: videoId});
 	}
 });
@@ -96,7 +94,7 @@ socket.on('RELOAD FROM SERVER', function(data) {
 	player.loadVideoById({
 		'videoId': data.room_video,
 	});
-	player.stopVideo();
+	player.pauseVideo();
 });
 
 /*
@@ -117,7 +115,7 @@ function onPlayerStateChange(event) {
  * TODO:
  */
 socket.on('PLAYER STATE CHANGE FROM SERVER', function(data) {
-	player.seekTo(data.current_time, true)
+	player.seekTo(data.current_time, true);
 	if (data.player_state == 1) {
 		player.playVideo();
 	} else if (data.player_state == 2) {
