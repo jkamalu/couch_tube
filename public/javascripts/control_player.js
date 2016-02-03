@@ -2,7 +2,7 @@
  * 'globals' to keep track of
  */
 var room;
-var status = 'slave';
+var status = 'Slave';
 
  /*
   * DOM elements to use
@@ -44,81 +44,99 @@ function onPlayerReady(event) {
  */
 var socket = io.connect();
 
-/*
- * ROOM JOIN - CLIENT
+/**
+ * EVENT:     The join room button is clicked
+ *
+ * ACTIVITY:  Communicate event to server
+ *
+ * OUTPUT:    roomNameClient
+ *
+ * TODO:      
  */
 joinButton.addEventListener('click', function(event) {
-	socket.emit('JOIN FROM CLIENT', {roomName: joinInput.value});
+	socket.emit('JOIN', {roomNameClient: joinInput.value});
 	joinInput.value = '';
 });
 
-/*
- * ROOM JOIN - SERVER
- * INPUT DATA: the entire room JSON plus the user role
- * TODO: synch with times and state
+/**
+ * INPUT:     userStatusServer, room JSON (in the DB form room_element)
+ *
+ * ACTIVITY:  Assign room variable, load and stop video, update user status, misc.
+ *
+ * TODO:      Synch times and state for slaves on join
  */
-socket.on('JOIN FROM SERVER', function(data) {
+socket.on('JOIN', function(data) {
 	room = data;
-	status = room.join_as;
-	if (room.room_video) {
+	status = data.userStatusServer;
+	if (data.room_video) {
 		player.loadVideoById({
 			'videoId': data.room_video,
 		});	
 		player.stopVideo();
 	}
-	roomLabel.innerHTML = room.room_name;
+	roomLabel.innerHTML = data.room_name;
 	statusLabel.innerHTML = status;
 });
 
-/* 
- * RELOAD PLAYER - CLIENT
+/**
+ * EVENT:     The load video button is clicked
+ *
+ * ACTIVITY:  Communicate event to server
+ *
+ * OUTPUT:    roomNameClient
+ *
+ * TODO:      
  */
 searchButton.addEventListener('click', function(event) {
-	videoId = searchInput.value;
-	searchInput.value = '';
-	if (!room) {
-		player.loadVideoById({
-			'videoId': data.room_video,
-		});	
-	} else if (status === 'Leader') {
-		socket.emit('RELOAD FROM CLIENT', {roomName: room.room_name, videoId: videoId});
+	if (status === 'Leader') {
+		socket.emit('RELOAD', {roomNameClient: room.room_name, videoKeyClient: searchInput.value});
 	}
+	searchInput.value = '';
 });
   
-/*
- * RELOAD PLAYER - SERVER
- * INPUT DATA: video id
- * TODO:
+/**
+ * INPUT:     videoKeyServer
+ *
+ * ACTIVITY:  Load and pause video from server
+ *
+ * TODO:      
  */
-socket.on('RELOAD FROM SERVER', function(data) {
+socket.on('RELOAD', function(data) {
 	player.loadVideoById({
-		'videoId': data.room_video,
+		'videoId': data.roomVideoServer,
 	});
-	player.pauseVideo();
+	player.stopVideo();
 });
 
-/*
- * PLAYER STATE CHANGE - CLIENT 
- * TODO: improve case when buffering -- pay attentiont to the else
+/**
+ * EVENT:     The load video button is clicked
+ *
+ * ACTIVITY:  Communicate event to server
+ *
+ * OUTPUT:    roomNameClient, playerStateClient, currentTimeClient
+ *
+ * TODO: 	  Buffering and else   
  */
 function onPlayerStateChange(event) {
 	var playerState = event.data;
 	//0 end, 1 play, 2 pause, 3 buffer
-	if (playerState == 1 || playerState == 2 || playerState == 3) {
-		socket.emit('PLAYER STATE CHANGE FROM CLIENT', {roomName: room.room_name, playerState: playerState, currentTime: player.getCurrentTime()});
+	if (room && (playerState == 1 || playerState == 2 || playerState == 3)) {
+		socket.emit('PLAYERSTATE', {roomNameClient: room.room_name, playerStateClient: playerState, currentTimeClient: player.getCurrentTime()});
 	} else {}
 }
 
-/*
- * PLAYER STATE CHANGE - SERVER
- * INPUT DATA: state
- * TODO:
+/**
+ * INPUT:     playerStateServer, currentTimeServer
+ *
+ * ACTIVITY:  Load and pause video from server
+ *
+ * TODO:      
  */
-socket.on('PLAYER STATE CHANGE FROM SERVER', function(data) {
-	player.seekTo(data.current_time, true);
-	if (data.player_state == 1) {
+socket.on('PLAYERSTATE', function(data) {
+	player.seekTo(data.currentTimeServer, true);
+	if (data.playerStateServer == 1) {
 		player.playVideo();
-	} else if (data.player_state == 2) {
+	} else if (data.playerStateServer == 2) {
 		player.pauseVideo();
 	} else {}
 });

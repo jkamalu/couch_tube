@@ -16,62 +16,68 @@ server.on('error', onError);
 server.on('listening', onListening);
 
 /**
+ * INPUT:     List of items in incoming JSON document, e.g. elementClient
+ *
+ * ACTIVITY:  Description of event activity
+ *
+ * OUTPUT:    List of items in outgoing JSON document, e.g. elementServer
+ *
+ * TODO:      What needs to be done
+ */
+
+/**
  * Listen for socket events from the client and send them out
  */
 io.on('connection', function(socket) {
   
   /*
-   * INPUT DOC: room name and video id
-   * DATABASE ACTIVITY: Add the video id to the room
-   * EMITS:
-   *    TO: All sockets in the room, including the sender
-   *    DOC: video id
-   * TODO: Check to mke sure a leader has made the request -- currently goes on every requst due to true
+   * INPUT:     roomNameClient, videoKeyClient
+   *
+   * ACTIVITY:  Add the video key to the room
+   *
+   * OUTPUT:    videoKeyServer -> all sockets
+   *
+   * TODO:
    */
-  socket.on('RELOAD FROM CLIENT', function(data, err) {
+  socket.on('RELOAD', function(data, err) {
     connection(function(db) {
-      console.log("treerterterte");
-      var room_collection = db.collection('room_collection');
-      room_collection.findOne({room_name: data.roomName}, function(err, doc) {
-        console.log(doc)
-        console.log(doc.room_name)
+      var roomCollection = db.collection('room_collection');
+      roomCollection.findOne({room_name: data.roomNameClient}, function(err, doc) {
         if (doc.room_leader == socket.id) {
-          room_collection.update(
-            { 'room_name': data.roomName },
+          roomCollection.update(
+            { 'room_name': data.roomNameClient },
             { 
               $set: {
-                room_video: data.videoId,
+                room_video: data.videoKeyClient,
                 room_playback_time: 0,
                 room_playback_state: 2
               }
             }
           );
-          io.sockets.in(socket.rooms[0]).emit('RELOAD FROM SERVER', {room_video: data.videoId});
+          io.sockets.in(socket.rooms[0]).emit('RELOAD', {roomVideoServer: data.videoKeyClient});
         }
       });
     });
   });
 
   /*
-   * INPUT DOC: room name
-   * DATABASE ACTIVITY: adds the room to the database if new and updates if not
-   * EMITS:
-   *    TO: The sender
-   *    DOC: the entire room JSON + status
-   * TODO: If a socket is a leader, update the leader
-           If a socket is a slave, get them to the right point in the video
-   *       Add other relative values and their proper behavior
+   * INPUT:     roomNameClient
+   *
+   * ACTIVITY:  Add the room to the database, or update if preexisting
+   *
+   * OUPUT:     userStatusServer, room JSON -> sender socket
+   *
+   * TODO:      Handle leader change, slave playback time, other misc. updates
    */
-  socket.on('JOIN FROM CLIENT', function(doc) {
-    console.log("werwerwerwerwe");
+  socket.on('JOIN', function(doc) {
     //Case inesensitivity for the roomname
-    var roomName = doc.roomName.toUpperCase();
-    //removing user from io room and db room
+    var roomNameClient = doc.roomNameClient.toUpperCase();
+    //Removing user from io room and db room
     socket.leaveAll();
-    socket.join(roomName);
+    socket.join(roomNameClient);
     connection(function(db) {
-      var room_collection = db.collection('room_collection');
-      room_collection.update(
+      var roomCollection = db.collection('room_collection');
+      roomCollection.update(
         { },
         { 
           $pull: { 
@@ -79,8 +85,8 @@ io.on('connection', function(socket) {
           } 
         }
       );
-      room_collection.findOne({room_name: roomName}, function(err, doc){
-        var userRole;
+      roomCollection.findOne({room_name: roomNameClient}, function(err, doc){
+        var userStatus;
         /*
          * IF THE ROOM DOES NOT EXIST, CREATE IT IN THE DATABASE
          * 
@@ -89,14 +95,14 @@ io.on('connection', function(socket) {
          * - new user entry: name, role, socketid
          */
         if (!doc) {
-          userRole = 'Leader';
+          userStatus = 'Leader';
           doc = {
-              'room_name': roomName,
+              'room_name': roomNameClient,
               'room_leader': socket.id,
               'room_users': [
                 {
                   'user_name': '',
-                  'user_role': userRole,
+                  'user_role': userStatus,
                   'user_socket': socket.id
                 }
               ],
@@ -104,7 +110,7 @@ io.on('connection', function(socket) {
               'room_playback_time': '',
               'room_playback_state': ''
           };
-          room_collection.insert(doc);
+          roomCollection.insert(doc);
         } 
         /*
          * IF THE ROOM DOES EXIST, UPDATE THE USER ENTRIES IN THE DATABASE
@@ -113,39 +119,40 @@ io.on('connection', function(socket) {
          * - new user entry: name, role, socketid
          */
         else {
-          userRole = 'Slave';
+          userStatus = 'Slave';
           var user = {
             'user_name': '',
-            'user_role': userRole,
+            'user_role': userStatus,
             'user_socket': socket.id
           };
           doc.room_users.push(user);
-          room_collection.update(
-            { 'room_name': roomName },
+          roomCollection.update(
+            { 'room_name': roomNameClient },
             { $push: { room_users: user } }
           );
         }
-        doc.join_as = userRole;
+        doc.userStatusServer = userStatus;
         doc.room_leader = '';
-        socket.emit('JOIN FROM SERVER', doc);
+        socket.emit('JOIN', doc);
       });
     });
   });
 
   /*
-   * INPUT DOC: number of player state (outdated)
-   * DATABASE ACTIVITY: change the state of the room
-   * EMITS:
-   *    TO: all sockets but sender
-   *    DOC: which state, and potentially the time
-   * TODO: everything
+   * INPUT:     roomNameClient, playerStateClient, currentTimeClient
+   * 
+   * ACTIVITY:  Change the player state of the room and update users in room
+   * 
+   * OUTPUT:    playerStateServer, currentTimeServer -> all sockets
+   * 
+   * TODO:      Update database
    */
-  socket.on('PLAYER STATE CHANGE FROM CLIENT', function(data, err) {
+  socket.on('PLAYERSTATE', function(data, err) {
     connection(function(db) {
-      var room_collection = db.collection('room_collection');
-      room_collection.findOne({room_name: data.roomName}, function(err, doc) {
+      var roomCollection = db.collection('room_collection');
+      roomCollection.findOne({room_name: data.roomNameClient}, function(err, doc) {
         if (doc.room_leader == socket.id) {
-          socket.broadcast.to(socket.rooms[0]).emit('PLAYER STATE CHANGE FROM SERVER', {player_state: data.playerState, current_time: data.currentTime});
+          socket.broadcast.to(socket.rooms[0]).emit('PLAYERSTATE', {playerStateServer: data.playerStateClient, currentTimeServer: data.currentTimeClient});
         }
       });
     });
