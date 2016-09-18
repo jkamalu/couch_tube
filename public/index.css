@@ -1,11 +1,45 @@
 @import url('http://fonts.googleapis.com/css?family=Raleway:300');
 
-::selection {
+/*background-color*/
+.content {
+  background-color: #E8E8E8;
+}
+
+/*content color*/
+.container,
+.navbar {
+  background-color: white;
+}
+
+*::selection,
+.header,
+.footer {
   background-color: #FF6347;
 }
 
+/*link color*/
+a.navbar-link:hover,
+h5.toggler:hover {
+  color: #FF6347;
+}
+
+/*button and text area color*/
+#video-button:hover, #room-button:hover, #email-button:hover,
+#video-input:focus, #room-input:hover, #email-input:hover,
+textarea:focus {
+  border-color: red;
+}
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}
+
 body {
-  padding-top: 150px;
+  padding-top: 10em
 }
 
 .header {
@@ -13,53 +47,45 @@ body {
   position: fixed;
   top: 0;
   width: 100%;
-  padding-top: 50px;
+  height: 10rem;
+  padding-top: 5rem;
   z-index: -1;
-}
-
-.header-hidden {
-  visibility: hidden;
-}
-
-h2.header {
   text-align: center;
-  margin: 0px;
 }
 
 .content {
   margin: 0;
   padding: 0;
-  background-color: white;
 }
 
 .container {
-  position: relative;
-  background-color: white;
+  height: 100%;
+}
+
+.navbar-container {
+  height: 50px;
+  width: 100%;
 }
 
 .navbar {
-  background-color: white;
+  box-shadow: 0 5px 5px -5px;
   z-index: 150;
-  width: 100%;
-  height: 50px;
-  padding-bottom: 2px;
-  margin-bottom: -50px;
+  width: inherit;
+  height: inherit;
 }
 
 .navbar-scrolled {
-  border-bottom: thin solid #ccc;
   position: fixed;
+  border-top: none;
   top: 0;
 }
 
-ul.video-list {
+ul.video-list, {
   padding: 0;
   margin: 0;
 }
 
 ul.navbar-list {
-  border-top: thin solid #ccc;
-  border-bottom: thin solid #ccc;
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -67,73 +93,57 @@ ul.navbar-list {
   font-size: 100%;
 }
 
-ul.navbar-list > ul {
-  border: none;
-  float: right;
-}
-
-ul.navbar-list-scrolled {
-  border: none;
-}
-
 li.navbar-item {
-  float: left;
   margin: 0;
-}
-
-a {
-  text-decoration: none;
 }
 
 a.navbar-link {
   display: block;
+  text-decoration: none;
   text-align: center;
-  padding: 14px 16px;
+  padding: .9em;
   color: black;
-  font-weight: 700;
+  font-weight: bold;
 }
 
-a.navbar-link:hover {
-  color: red;
+.section-container {
+  margin-top: 5rem;
+  margin-bottom: 5rem;
 }
 
 /* This scheme for resizable vidya found here http://stackoverflow.com/questions/7737557 */
 
-div#player-container {
-  margin-top: 100px;
-  margin-bottom: 50px;
+#player-container {
+  margin: 0px 0px 50px;
   position: relative;
   padding-bottom: 60%;
   height: 0px;
 }
 
-iframe#player {
+#player {
   position: absolute;
-  top: 0px;
-  left: 0px;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
 }
 
 section {
-  margin-top: 35px;
+  padding: 0px 10px;
 }
 
-h5 {
+h5.toggler {
   border-bottom: thin solid #ccc;
+  cursor: pointer;
 }
 
-#room-input:focus, #room-button:hover, 
-#video-input:focus, #video-button:hover,
-#email-input:focus, #email-button:hover,
-div textarea:focus {
-  outline: 0 none;
-  border-color: red;
+h5.toggler + * {
+  margin-bottom: 5rem;
 }
 
-footer {
+.footer {
   text-align: center;
-  border-top: thin solid #ccc;
-  padding-top: 5px;
-  font-size: 15px;
+  width: 100%;
+  padding-top: 2.5rem;
+  height: 5rem;
 }
