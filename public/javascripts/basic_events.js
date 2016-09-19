@@ -1,18 +1,27 @@
 var nav = $(".navbar");
-var header = $(".header");
-var navlist = $("#navbar-main");
-
-
 $(window).scroll(function() {
 	if ( $(this).scrollTop() > 150 ) {
 		nav.addClass("navbar-scrolled");
-		header.addClass("header-hidden");
-		navlist.addClass("navbar-list-scrolled");
 	} else {
 		nav.removeClass("navbar-scrolled");
-		header.removeClass("header-hidden");
-		navlist.removeClass("navbar-list-scrolled");
 	}
 });
+
+var togglers = $(".toggler");
+for (var i = 0; i < togglers.length; i++) {
+    $(togglers[i]).one("click", toggleOff);
+}
+
+function toggleOn(event) {
+    var toggler = $(event.target);
+    toggler.next().slideDown(500);
+    toggler.one("click", toggleOff);
+}
+
+function toggleOff(event) {
+    var toggler = $(event.target);
+    toggler.next().slideUp(500);
+    toggler.one("click", toggleOn);    
+}
 
 //https://teamtreehouse.com/community/forum-tip-create-a-sticky-navigation-with-css-and-jquery-2

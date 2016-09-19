@@ -1,5 +1,5 @@
 var MongoClient = require('mongodb').MongoClient;
-var mongoURI = 'mongodb://user:pass@ds057862.mongolab.com:57862/couchtube';//'mongodb://' + configDB.user + ':' + configDB.pass + '@' + configDB.host + ':' + configDB.port;
+var mongoURI = 'mongodb://user:pass@ds057862.mongolab.com:57862/couchtube';
 var db = null;
 
 module.exports = function(callback) {

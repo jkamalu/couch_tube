@@ -5,22 +5,29 @@ var express = require('express'),
     logger = require('morgan'),
     cookieParser = require('cookie-parser'),
     bodyParser = require('body-parser')
+    
 var routes = require('./routes/index'),
     users = require('./routes/users')
+
 var app = express()
     app.io = socketIO()
+
 var connection = require('./bin/connectDB')
     connection(function(db){})    
 
+<<<<<<< HEAD
 // view engine setup
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'pug')
+=======
+>>>>>>> sans-angular
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
 app.use(logger('dev'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
+
 app.use('/', routes)
 app.use('/users', users)
 
