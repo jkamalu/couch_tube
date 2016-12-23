@@ -1,0 +1,33 @@
+body {
+    background-color: transparent;
+}
+
+.content {
+  background-color: #FFEAEA;
+}
+
+#section-container,
+.navbar {
+  background-color: white;
+}
+
+a.navbar-link {
+  color: black;
+}
+
+#banner,
+.footer,
+*::selection {
+  background-color: #FF6347;
+}
+
+/*link color*/
+a.navbar-link:hover,
+h5.toggler:hover {
+  color: #FF6347;
+}
+
+input:hover, select:hover, textarea:hover,
+input:focus, select:focus, textarea:focus {
+  border-color: #FF6347 !important;
+}

@@ -1,0 +1,39 @@
+doctype 5
+html(lang="en")
+    head
+        title Too Much Dog
+        link(rel="stylesheet", type="text/css", href="stylesheets/style.css")
+        link(rel="stylesheet", type="text/css", href="bower_components/skeleton/css/normalize.css")
+        link(rel="stylesheet", type="text/css", href="bower_components/skeleton/css/skeleton.css")
+        script(type="text/javascript", src="bower_components/jquery/dist/jquery.js")
+        script(type="text/javascript", src="bower_components/angular/angular.js")
+        script(type="text/javascript", src="bower_components/angular-aria/angular-aria.js")
+        script(type="text/javascript", src="bower_components/angular-animate/angular-animate.js")
+        script(type="text/javascript", src="bower_components/angular-material/angular-material.js")
+        script(type="text/javascript", src="bower_components/socket.io-client/socket.io.js")
+    body#home(ng-app="tooMuchDog")
+        div#banner
+            h2#header Too Much Dog
+        div.content
+            div#navbar-container
+                div.navbar(ng-controller="navbarController", navbar-stick)
+                    div.container
+                        ul#navbar-list
+                            span#nav-left
+                                li
+                                    a.navbar-link(href="/#home") Home
+                                li
+                                    a.navbar-link(href="/#room") Room
+                                li
+                                    a.navbar-link(href="/#video") Video
+                            span#nav-right
+                                li
+                                    a.navbar-link(ng-click="showSettings($event)") Settings
+                                li
+                                    a.navbar-link(href="/#contact") Contact
+            script(type="text/javascript", src="javascripts/tooMuchDog.js")
+            block variable-content   
+            div.footer
+                footer
+                    span Running on a MEAN stack and Skeleton CSS boilerplate.
+        script(type="text/javascript", src="javascripts/control_player.js")

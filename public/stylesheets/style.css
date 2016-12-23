@@ -1,0 +1,135 @@
+@import url('http://fonts.googleapis.com/css?family=Raleway:300');
+@import url(./colorscheme.css);
+@import url(../templates/dialog.css);
+
+.left {
+	float: left;
+}
+
+.right {
+	float: right;
+}
+
+html {
+	font-family: 'Raleway';
+	font-size: 16px;
+}
+
+body {
+	padding-top: 15rem;
+	margin: 0 0 0 0;
+}
+
+div#banner {
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: -1;
+	text-align: center;
+}
+
+h2#header {
+	line-height: 15rem;
+	margin: 0 0 0 0;
+}
+
+div#navbar-container {
+	height: 5rem;
+	width: 100%;
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+}
+
+.navbar {
+	height: inherit;
+	width: inherit;
+	box-shadow: 0 .1rem .1rem -.1rem;
+	overflow: hidden;
+	z-index: 1000;
+}
+
+.navbar * {
+	height: 5rem;
+	margin: 0 0 0 0;
+}
+
+.navbar-scrolled {
+	position: fixed;
+	top: 0;
+}
+
+ul#navbar-list {
+	list-style-type: none;
+	overflow: hidden;
+} 
+
+ul#video-list {
+	margin: 0 0 0 0;
+}
+
+span#nav-left > li {
+	padding-right: 2em;
+	float: left;
+}
+
+span#nav-right > li {
+	padding-left: 2em;
+	float: right;
+}
+
+a.navbar-link {
+	display: block;
+	text-decoration: none;
+	text-align: center;
+	font-weight: bold;
+	line-height: 5rem;
+	cursor: pointer;
+}
+
+div#section-container {
+	border-radius: .5rem;
+	border: thin solid #ccc;
+	margin-top: 5rem;
+	margin-bottom: 5rem;
+}
+
+/* http://stackoverflow.com/questions/7737557 */
+#player-container {
+	margin-bottom: 3rem;
+	position: relative;
+	padding-bottom: 60%;
+	height: 0;
+}
+
+#player {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+section {
+	padding: 0 1rem;
+}
+
+label.section-bar {
+	margin-bottom: 1.5rem;
+	cursor: pointer;
+	border-bottom: thin solid #ccc;
+}
+
+h5.section-header {
+	margin: 0 0 0 0;
+}
+
+div.section-content > * {
+	margin-bottom: 4rem;
+}
+
+.footer {
+	text-align: center;
+	width: 100%;
+	padding-top: 2.5rem;
+	height: 5rem;
+}

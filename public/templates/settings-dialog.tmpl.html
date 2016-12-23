@@ -1,0 +1,23 @@
+<dialog-container ng-cloak>
+	<md-dialog id="settings-dialog" aria-label="Settings">
+		<form ng-cloak>
+			<md-toolbar>
+				<div class="md-toolbar-tools">
+					<h3>Settings</h3>
+				</div>
+			</md-toolbar>
+			<md-dialog-content>
+				<div class="md-dialog-content">
+					<h5>Page Layout</h5>
+					<h5>Page Lights</h5>
+				</div>
+			</md-dialog-content>
+			<md-dialog-actions>
+				<div class="md-dialog-actions">
+					<md-button ng-click="answer('apply')">Apply.</md-button>
+					<md-button ng-click="answer('cancel')">Cancel.</md-button>
+				</div>
+			</md-dialog-actions>
+		</form>
+	</md-dialog>
+</dialog-container>

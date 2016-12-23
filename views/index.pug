@@ -1,0 +1,74 @@
+extends layout
+
+block variable-content
+    div#section-container.container
+        section#intro(section-toggle)
+            label.section-bar
+                h5.section-header Welcome
+            div.section-content
+                p Pedicabo ego vos et irrumabo, Aureli pathice et cinaede Furi, 
+                  | qui me ex versiculis meis putastis, quod sunt molliculi, parum 
+                  | pudicum. Nam castum esse decet pium poetam ipsum, versiculos
+                  | nihil necessest; qui tum denique habent salem ac leporem, si
+                  | sunt molliculi ac parum pudici et quod pruriat incitare possunt,
+                  | non dico pueris, sed his pilosis qui duros nequeunt movere lumbos.
+                  | Vos, quod milia multa basiorum legistis, male me marem putatis? 
+                  | Pedicabo ego vos et irrumabo.
+        div#player-container
+            div#player
+        section#room(section-toggle)
+            label.section-bar
+                h5.section-header Room
+            div.section-content
+                div.row
+                    div.six.columns
+                        label Room ID
+                        input#room-input.u-full-width(type="text", placeholder="example_room_id")
+                        input#room-button.button(type="button", value="Join")
+                    div.six.columns
+                        label Info
+                        table.u-full-width
+                            tbody
+                                tr
+                                    td Room:
+                                    td#room-label Aucune
+                                tr
+                                    td Status:
+                                    td#status-label Personne
+        section#video(section-toggle)
+            label.section-bar
+                h5.section-header Video
+            div.section-content
+                div.row
+                    div.six.columns
+                        label Video ID
+                        input#video-input.u-full-width(type="email", placeholder="example_video_id")
+                        input#video-button.button(type="submit", value="Load")
+                    div.six.columns
+                        label Info
+                        ul#video-list
+                            li You must be the room leader to load a video.
+                            li To load a video...
+                            ul
+                                li Find the video URL on #[a(href="https://www.youtube.com", target="__blank") Youtube].
+                                li Input the video ID in the search bar
+                            li For example: #[strong https://www.youtube.com/watch?v=qpEqv7DAPV4] 
+                               | has video ID #[strong qpEqv7DAPV4]
+        section#contact(section-toggle)
+            label.section-bar
+                h5.section-header Contact
+            div.section-content
+                form
+                    div.row
+                        div.six.columns
+                            label Your email
+                            input#email-input.u-full-width(type="email", placeholder="test@mailbox.com")
+                        div.six.columns
+                            label Reason for contacting
+                            select#contact-reason-input.u-full-width
+                                option(value="Option 1") I have a question
+                                option(value="Option 2") I want to get involved
+                                option(value="Option 3") I found a bug
+                    label(for="exampleMessage") Message
+                    textarea#contact-message-input.u-full-width(placeholder="Hi John...")
+                    input#email-button.button(type="submit", value="Submit")
