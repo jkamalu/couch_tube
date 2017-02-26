@@ -16,7 +16,7 @@ block variable-content
                   | Pedicabo ego vos et irrumabo.
         div#player-container
             div#player
-        section#room(section-toggle)
+        section#room(section-toggle)(join-request)
             label.section-bar
                 h5.section-header Room
             div.section-content
@@ -24,7 +24,7 @@ block variable-content
                     div.six.columns
                         label Room ID
                         input#room-input.u-full-width(type="text", placeholder="example_room_id")
-                        input#room-button.button(type="button", value="Join")(join-request)
+                        input#room-button.button(type="button", value="Join")
                     div.six.columns
                         label Info
                         table.u-full-width
@@ -35,7 +35,7 @@ block variable-content
                                 tr
                                     td Status:
                                     td#status-label Personne
-        section#video(section-toggle)
+        section#video(section-toggle)(video-request)
             label.section-bar
                 h5.section-header Video
             div.section-content
