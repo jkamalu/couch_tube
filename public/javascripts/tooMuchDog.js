@@ -48,7 +48,6 @@ tooMuchDog.directive("sectionToggle", function() {
         var sectionBar = element.find(".section-bar");
         sectionBar.on("click", function(event) {
             var state = $(this).data("state");
-            console.log(state)
             state = !state;
             if (!state) {
                 sectionBar.next().slideDown(500);
