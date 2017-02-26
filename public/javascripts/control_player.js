@@ -53,9 +53,22 @@ var socket = io.connect();
  *
  * TODO:      
  */
-joinButton.addEventListener('click', function(event) {
-	socket.emit('JOIN', {roomNameClient: joinInput.value});
-	joinInput.value = '';
+// joinButton.addEventListener('click', function(event) {
+// 	socket.emit('JOIN', {roomNameClient: joinInput.value});
+// 	joinInput.value = '';
+// });
+
+tooMuchDog.directive("joinRequest", function() {
+    var link = function(scope, element, attrs) {
+        var roomButton = element.find("#room-button");
+        roomButton.on("click", function(event) {
+            console.log("er")
+            event.preventDefault();
+        });
+    };
+    return {
+        link: link
+    }
 });
 
 /**
@@ -89,7 +102,7 @@ socket.on('JOIN', function(data) {
  */
 searchButton.addEventListener('click', function(event) {
 	if (status === 'Leader') {
-		socket.emit('RELOAD', {roomNameClient: room.room_name, videoKeyClient: searchInput.value});
+		socket.emit('loadVideoByID', {roomNameClient: room.room_name, videoKeyClient: searchInput.value});
 	}
 	searchInput.value = '';
 });
@@ -101,7 +114,7 @@ searchButton.addEventListener('click', function(event) {
  *
  * TODO:      
  */
-socket.on('RELOAD', function(data) {
+socket.on('loadVideoByID', function(data) {
 	player.loadVideoById({
 		'videoId': data.roomVideoServer,
 	});

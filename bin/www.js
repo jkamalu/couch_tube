@@ -1,19 +1,20 @@
 var app = require('../app');
-var debug = require('debug')('CouchTube:server');
 var http = require('http');
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
-var io = app.io;
 var server = http.createServer(app);
-io.attach(server);
-var connection = require('./connectDB');
 
-/** 
- * Listen on provided port, on all network interfaces.
- */
+var io = require('socket.io')();
+io.attach(server);
+
+var MongoClient = require('mongodb').MongoClient;
+var mongoURI = 'mongodb://user:pass@ds057862.mongolab.com:57862/couchtube';
+
+MongoClient.connect(mongoURI, function(err, db) {
+
+})
+
 server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
 
 /**
  * INPUT:     List of items in incoming JSON document, e.g. elementClient
@@ -39,8 +40,8 @@ io.on('connection', function(socket) {
    *
    * TODO:
    */
-  socket.on('RELOAD', function(data, err) {
-    connection(function(db) {
+  socket.on('loadVideoByID', function(data, err) {
+    MongoClient.connect(mongoURI, function(err, db) {
       var roomCollection = db.collection('room_collection');
       roomCollection.findOne({room_name: data.roomNameClient}, function(err, doc) {
         if (doc.room_leader == socket.id) {
@@ -54,7 +55,7 @@ io.on('connection', function(socket) {
               }
             }
           );
-          io.sockets.in(socket.rooms[0]).emit('RELOAD', {roomVideoServer: data.videoKeyClient});
+          io.sockets.in(socket.rooms[0]).emit('loadVideoByID', {roomVideoServer: data.videoKeyClient});
         }
       });
     });
@@ -75,7 +76,7 @@ io.on('connection', function(socket) {
     //Removing user from io room and db room
     socket.leaveAll();
     socket.join(roomNameClient);
-    connection(function(db) {
+    MongoClient.connect(mongoURI, function(err, db) {
       var roomCollection = db.collection('room_collection');
       roomCollection.update(
         { },
@@ -148,7 +149,7 @@ io.on('connection', function(socket) {
    * TODO:      Update database
    */
   socket.on('PLAYERSTATE', function(data, err) {
-    connection(function(db) {
+    MongoClient.connect(mongoURI, function(err, db) {
       var roomCollection = db.collection('room_collection');
       roomCollection.findOne({room_name: data.roomNameClient}, function(err, doc) {
         if (doc.room_leader == socket.id) {
@@ -177,42 +178,4 @@ function normalizePort(val) {
   }
 
   return false;
-}
-
-/**
- * Event listener for HTTP server "error" event.
- */
-function onError(error) {
-  if (error.syscall !== 'listen') {
-    throw error;
-  }
-
-  var bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port;
-
-  // handle specific listen errors with friendly messages
-  switch (error.code) {
-    case 'EACCES':
-      console.error(bind + ' requires elevated privileges');
-      process.exit(1);
-      break;
-    case 'EADDRINUSE':
-      console.error(bind + ' is already in use');
-      process.exit(1);
-      break;
-    default:
-      throw error;
-  }
-}
-
-/**
- * Event listener for HTTP server "listening" event.
- */
-function onListening() {
-  var addr = server.address();
-  var bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
-  debug('Listening on ' + bind);
 }
